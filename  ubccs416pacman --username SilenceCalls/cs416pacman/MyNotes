@@ -1,0 +1,58 @@
+NOTES:
+
+Data flow of the game:
+
+C-PacMan -> - new gameModel
+				- State set to STATE_INTRO (default)
+				- creates ghosts
+				- creates player
+				- fills the things array
+			- new gameUI
+			- new topCanvas
+			- new bottomCanvas
+		
+			- add key listner
+			- runs the ticker -> first thing game does is STATE_INTRO
+			- then we can go to any of  - highscores
+										- Color change
+									   	- new Single player
+									   		- STATE_NEWGAME
+									   			- run.newgame()
+									   			- state STATE_BEGIN_PLAY
+									   			- tickStateBeginPlay()
+									   			- state STATE_PLAYING
+									   				- tickGamePlay()
+									   				- we are playing the game!
+									   				- from here we can go to pause, or die
+									   	- new local multi-player
+									   	- multiplayer
+									   		- host game
+									   			*create a update socket
+									   			*create a server socket
+									   			- accept connection
+									   			- begin play
+									   		- connect to game
+									   			- connect
+									   				*create a gamestate listen socket
+									   				*create an update socket
+									   			- begin play
+
+Self notes and ideas.
+What we got: 	Custom packet for any data.
+				Co-Ordinator is the HOST. He is also PACMAN. for now.
+				Person joining is going to be a HumanGhost.
+				controller broadcasts entire game state via UDP
+				Slaves send updates via TCP.
+								
+			
+Current progress:	Person can host a game. Hosting functions all work.
+					Host can accept connection and start playing.
+					While playing controller sends the game state info
+					with every tick.
+					Update Slave Model 
+
+TODO:				Receive updates when human ghost changes directions.
+					Need to send updates when characters change direction (slave)
+					Connect to a hosting game (slave)
+					
+			
