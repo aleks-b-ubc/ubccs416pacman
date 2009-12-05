@@ -102,8 +102,7 @@ public class Thing implements Serializable
    // This method will take the specified location and direction and determine
    // for the given location if the thing moved in that direction, what the
    // next possible turning location would be.
-   @SuppressWarnings("static-access")
-boolean getDestination (int direction, int locX, int locY, Point point)
+   boolean getDestination (int direction, int locX, int locY, Point point)
    {
       // If the request direction is blocked by a wall, then just return the current location
       if ((direction == UP && (m_gameModel.m_gameState[locX][locY] & m_gameModel.GS_NORTH) != 0) ||

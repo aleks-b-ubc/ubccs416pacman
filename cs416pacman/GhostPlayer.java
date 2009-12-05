@@ -1,7 +1,6 @@
 import java.awt.*;
 
 
-@SuppressWarnings("serial")
 public class GhostPlayer extends Ghost{
 	//byte     m_requestedDirection = STILL;
 	Color		m_color;
@@ -15,11 +14,10 @@ public class GhostPlayer extends Ghost{
 		m_bInsideRoom = true;
 	    m_nExitMilliSec = nExitMilliSec;
 	    m_nTicks2Exit = m_nExitMilliSec / gameModel.m_pacMan.m_delay;
-
+		// TODO Auto-generated constructor stub
 	}
 	
-	   @SuppressWarnings("static-access")
-	public void draw (GameUI gameUI, Graphics g2)
+	   public void draw (GameUI gameUI, Graphics g2)
 	   {
 		   if (!m_bVisible)
 		         return;
@@ -291,12 +289,10 @@ public class GhostPlayer extends Ghost{
 		   }
 	   
 	   // Overriden to update Ghost's direction
-	   @SuppressWarnings("unused")
 	   public void tickThing ()
 	   {
 		   //boolean  bBackoff = false;
-		   
-		byte prevDirection = STILL;
+		   byte prevDirection = STILL;
 		   if (m_bEaten || m_bInsideRoom)
 		      {
 			   // If the ghost has entered the room and was just eaten,
@@ -470,8 +466,7 @@ public class GhostPlayer extends Ghost{
 		   }
 	   }
 	   
-	   @SuppressWarnings("static-access")
-	void setNextDirection (byte prevDirection)
+	   void setNextDirection (byte prevDirection)
 	   {
 	      int deltaX, deltaY, targetX, targetY;
 	      Point nextLocation = new Point ();

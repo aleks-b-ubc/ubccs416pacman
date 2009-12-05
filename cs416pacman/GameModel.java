@@ -73,6 +73,7 @@ public class GameModel implements Serializable{
 	int m_doorLocX = 13; // Bad.. Hard code location of door
 	int m_doorLocY = 12; // Bad.. Hard code location of door
 
+	// TODO: This is where the multiplayer stuff lies
 	// Variables for Multiplayer
 	int numberPlayers = 1; // Number of human players
 	boolean localMultiplayer = false; // Is set to true of the game is local multiplayer.
@@ -213,7 +214,6 @@ public class GameModel implements Serializable{
 
 	// Called when Pacman eats a Powerup
 	public void eatPowerup() {
-		@SuppressWarnings("unused")
 		int gameState;
 		for (int i = 0; i < m_ghosts.length; i++) {
 			if (m_ghosts[i].m_bEaten)

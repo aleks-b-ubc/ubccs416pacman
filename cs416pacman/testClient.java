@@ -52,7 +52,6 @@ public class testClient {
 	 */
 	public static void main(String[] args) {
 		
-		@SuppressWarnings("unused")
 		testClient test = new testClient();
 		
 	}

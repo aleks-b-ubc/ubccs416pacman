@@ -1,6 +1,5 @@
 import java.awt.*;
 
-@SuppressWarnings("serial")
 class Fruit extends Thing
 {
    Color    m_color;
@@ -50,8 +49,7 @@ class Fruit extends Thing
       //g2.setColor (Color.white);      //g2.drawRect (m_boundingBox.x, m_boundingBox.y, m_boundingBox.width, m_boundingBox.height);   }
    
    // Overriden to update Fruit's directions
-   @SuppressWarnings("static-access")
-public void tickThing ()
+   public void tickThing ()
    { 
       // Count down for how long the Points for eating the Fruit popup
       if (m_nTicks2Popup > 0)

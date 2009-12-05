@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.net.*;
 
-@SuppressWarnings("unused")
+
 public class BullyNode {
 	boolean election=false;
 	boolean wonElection = false;
@@ -33,6 +33,7 @@ public class BullyNode {
 		try {
 			socket = new DatagramSocket();
 		} catch (SocketException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (isClient){

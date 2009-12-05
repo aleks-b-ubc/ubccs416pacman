@@ -18,8 +18,7 @@ public class GameUI extends Canvas
    int         WALL5;            // PAL_LINE is a solid line through W2-W4
    int         WALL6;
    
-   @SuppressWarnings("unchecked")
-Hashtable   m_redrawHash;    // Contains grid cells that always need to be redrawn, 
+   Hashtable   m_redrawHash;    // Contains grid cells that always need to be redrawn, 
                                 // even in update.  These are here for special cases like
                                 // Powerup pills which are large enough such that passing 
                                 // Ghosts or Pacman could clip them.   GameModel   m_gameModel;   PacMan      m_pacMan;
@@ -31,7 +30,6 @@ Hashtable   m_redrawHash;    // Contains grid cells that always need to be redra
    boolean     m_bRedrawAll = false;   // Set to true to tell Update to Paint
    boolean     m_bDrawReady = false;   int         m_gridInset;         // Starting painting the maze with this offset   boolean     m_bFlipWallColor  = false;   boolean     m_bDrawGameOver   = false;   boolean     m_bDrawPaused     = false;
    boolean     m_bShowMultiplayer = false;
-
    
    boolean	   m_bShowHostingGame = false;
    String	   hostingIP;
@@ -41,8 +39,7 @@ Hashtable   m_redrawHash;    // Contains grid cells that always need to be redra
    boolean     m_seeIntroScreen  = false;
    Color pacmanColour = Color.yellow; //This is the default color for packman   
    
-   @SuppressWarnings("unchecked")
-GameUI (PacMan pacMan, GameModel gameModel, int width, int height) 
+   GameUI (PacMan pacMan, GameModel gameModel, int width, int height) 
    {      super ();
       setSize (width, height);      m_gameModel = gameModel;
       m_pacMan    = pacMan;      //CELL_LENGTH = width / (m_gameModel.m_gameSizeX + 1);      CELL_LENGTH = height / (m_gameModel.m_gameSizeY + 1);
@@ -55,8 +52,7 @@ GameUI (PacMan pacMan, GameModel gameModel, int width, int height)
             // Create the fonts
       m_font = new Font ("Helvetica", Font.BOLD, 14);      m_readyFont = new Font ("Helvetica", Font.BOLD, 20);      m_readyFontItalic = new Font ("Helvetica", Font.BOLD | Font.ITALIC, 20);   }
    // Refresh the Redraw Hash whenever the board changes.
-   @SuppressWarnings("unchecked")
-void refreshRedrawHash ()
+   void refreshRedrawHash ()
    {
       m_redrawHash.clear ();
       
@@ -73,8 +69,7 @@ void refreshRedrawHash ()
    }
    
    // Update will only redraw the changed game cells..
-   @SuppressWarnings("unchecked")
-public void update (Graphics g)
+   public void update (Graphics g)
    {      if (m_bRedrawAll)
       {
          m_bRedrawAll = false;
@@ -148,6 +143,7 @@ public void update (Graphics g)
     	  paintMultiplayer(g);
     	  return;
       }
+
       
       m_offGraphics.setColor (Color.blue);
       
@@ -187,10 +183,8 @@ public void update (Graphics g)
    private void paintHostingGame(Graphics g) {
 	   int         x             = 0;
 	      int         y             = 0;
-	      @SuppressWarnings("unused")
-		int         width         = 0;
-	      @SuppressWarnings("unused")
-		int         stringLength  = 0;
+	      int         width         = 0;
+	      int         stringLength  = 0;
 	      FontMetrics fm;
 	      
 	      m_offGraphics.setColor (Color.black);
@@ -233,6 +227,7 @@ public void update (Graphics g)
 }
 
 
+
 public void paintMultiplayer(Graphics g) {
 	   	  int         x             = 0;
 	      int         y             = 0;
@@ -242,8 +237,7 @@ public void paintMultiplayer(Graphics g) {
 	      m_offGraphics.fillRect (0, 0, m_offDim.width, m_offDim.height);
 	      if (m_imagePacman == null)
 	      {
-	    
-	        m_imagePacman = m_gameModel.m_pacMan.getImage (m_gameModel.m_pacMan.getCodeBase (), "pacman.jpg");
+	    	m_imagePacman = m_gameModel.m_pacMan.getImage (m_gameModel.m_pacMan.getCodeBase (), "pacman.jpg");
 	      }
 	      
 	      // Draw Logo Image
@@ -274,8 +268,7 @@ public void paintMultiplayer(Graphics g) {
 }
 
 
-// Displays the Color selection page containing the PAC-MAN banner
-   
+
    
    public void updateIntro (Graphics g)
    {      int x, y;            if (m_imagePacman != null)
@@ -312,12 +305,11 @@ public void paintMultiplayer(Graphics g) {
       m_offGraphics.setColor (Color.black);      m_offGraphics.fillRect (0, 0, m_offDim.width, m_offDim.height);
       if (m_imagePacman == null)
       {
-
-         m_imagePacman = m_gameModel.m_pacMan.getImage (m_gameModel.m_pacMan.getCodeBase (), "pacman.jpg");
+    	 m_imagePacman = m_gameModel.m_pacMan.getImage (m_gameModel.m_pacMan.getCodeBase (), "pacman.jpg");
       }            // Draw Logo Image
       y = 50;
       
-      x = (m_offDim.width - m_imagePacman.getWidth (this)) / 2;
+      x = (m_offDim.width - m_imagePacman.getWidth (this)) / 2;
             m_offGraphics.drawImage (m_imagePacman, x, y, this);
       
       // Draw Ghosts and PacMan Player

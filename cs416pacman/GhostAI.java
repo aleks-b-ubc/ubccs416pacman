@@ -1,7 +1,6 @@
 import java.awt.*;
 
 
-@SuppressWarnings("serial")
 class GhostAI extends Ghost
 {
   
@@ -36,8 +35,8 @@ class GhostAI extends Ghost
             m_gameModel.setPausedGame (false);      
             m_gameModel.m_player.setVisible (true);
             
-
-           m_gameModel.m_pacMan.m_soundMgr.playSound (SoundManager.SOUND_RETURNGHOST);
+          //TODO REMOVE COMMENT
+          // m_gameModel.m_pacMan.m_soundMgr.playSound (SoundManager.SOUND_RETURNGHOST);
          }
       }
          
@@ -180,8 +179,7 @@ class GhostAI extends Ghost
       setNextDirection (prevDirection, bBackoff);
    }
    
-   @SuppressWarnings("static-access")
-void setNextDirection (byte prevDirection, boolean bBackoff)
+   void setNextDirection (byte prevDirection, boolean bBackoff)
    {
       int deltaX, deltaY, targetX, targetY;
       Point nextLocation = new Point ();

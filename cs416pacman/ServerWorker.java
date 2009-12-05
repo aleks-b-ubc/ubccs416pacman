@@ -1,8 +1,8 @@
 import java.io.*;
 import java.net.*;
-@SuppressWarnings("unused")
+
 class ServerWorker implements Runnable {
-private Socket client;
+  private Socket client;
   ServerNode serverNode;
   private int ghostID;
   

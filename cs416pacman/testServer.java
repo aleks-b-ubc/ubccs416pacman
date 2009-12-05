@@ -79,8 +79,8 @@ public class testServer {
 		
 		
 	}
-	@SuppressWarnings("unused")
-	public static void main(String[] args) throws IOException {	
+
+	public static void main(String[] args) throws IOException {
 		testServer test = new testServer();
 	}
 

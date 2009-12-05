@@ -1,13 +1,24 @@
 import java.awt.*;
+import java.sql.*;
+import java.util.*;
 import java.applet.*;
+import java.awt.event.*;
 import java.io.*;
+import java.lang.Math;
 import java.net.*;
+
 import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class PacMan extends Applet {
 	ServerNode serverNode;
+	String sqlDB = "greentea_scoretest";
+	String sqlTable = "HighScores";
+	Connection con;
+	Statement stmt;
+	ResultSet rs;
 	byte ghostDirection =-1;
+	int facebookID; // Facebook userID
 	GameModel m_gameModel;
 	TopCanvas m_topCanvas;
 	BottomCanvas m_bottomCanvas;
@@ -58,7 +69,10 @@ public class PacMan extends Applet {
 	 */
 	 
 	public synchronized void init() {
-		
+		/*
+			this.appletIP =  new Socket(getDocumentBase().getHost(), 8080)
+			.getLocalAddress().getHostAddress();
+	*/
 		setTicksPerSec(25);
 		// Create canvases and layout
 		m_gameModel = new GameModel(this);
@@ -93,6 +107,8 @@ public class PacMan extends Applet {
 		
 		m_soundMgr = new SoundManager(this, getCodeBase());
 		if( !testing) {
+			
+
 			m_soundMgr.loadSoundClips();
 		}
 
@@ -325,6 +341,7 @@ public class PacMan extends Applet {
         updateSocket.send(packet);
 	}
 
+
 	private synchronized void deadPacman() {
 		
 
@@ -342,13 +359,49 @@ public class PacMan extends Applet {
 	}
 
 	private void levelComplete() {
-
 		m_soundMgr.stop();
 		tickLevelComplete();
 	}
 
 	private synchronized void gameOver() {
 		if (m_gameModel.m_nTicks2GameOver == 0) {
+			try {
+
+				// alternative to do it internally, using only user input name
+				// String name = "";
+				// name=JOptionPane.showInputDialog("Please enter your name");
+				// String msg = "Hello " + name + "!";
+				// JOptionPane.showMessageDialog(null, msg);
+				// System.out.println(name);
+
+				// Extract parameter from index.php
+				String name = this.getParameter("username");
+				String firstname = this.getParameter("firstname");
+				String pic_url = this.getParameter("pic_url");
+
+				// get score from current game and send in a query to
+				// highscore.php
+				int score = m_gameModel.m_player.m_score;
+				String query = "http://www.greentealatte.net/highscore.php?action=submit&admin_user=greentea_pacman&admin_pass=wakawaka&picurl="
+						+ pic_url
+						+ "&firstname="
+						+ firstname
+						+ "&name="
+						+ name
+						+ "&score=" + score + "&access_code=1234";
+				URL url = new URL(query);
+				URLConnection conn = url.openConnection();
+				conn.connect();
+				InputStream in = url.openStream();
+
+				// print out url and paste in browser to see if valid. 0 -
+				// insert fail, 1 - insert success
+				// System.out.println(query);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 			if (m_gameModel.m_player.m_score > m_gameModel.m_highScore) {
 				m_gameModel.m_highScore = m_gameModel.m_player.m_score;
@@ -372,7 +425,6 @@ public class PacMan extends Applet {
 	}
 
 	private synchronized void startNewGame() {
-
 
 		m_soundMgr.stop();
 		m_gameModel.newGame();
@@ -404,7 +456,6 @@ public class PacMan extends Applet {
 	private synchronized void startMultiplayerScreen() {
 
 		// This is going to show up the Multiplayer waiting area
-
 
 		m_soundMgr.stop();
 		m_gameModel.m_bIntroInited = false;
@@ -461,7 +512,6 @@ public class PacMan extends Applet {
 			m_gameModel.m_nOrigTicksPerSecond = m_ticksPerSec;
 			setTicksPerSec(35);
 			
-
 			m_soundMgr.stop();
 		}
 
@@ -475,7 +525,6 @@ public class PacMan extends Applet {
 			m_gameModel.m_fruit.setVisible(false);
 			m_gameUI.m_bRedrawAll = true;
 			
-
 			m_soundMgr.playSound(SoundManager.SOUND_PACMANDIES);
 		}
 
@@ -499,7 +548,6 @@ public class PacMan extends Applet {
 			m_gameUI.m_bFlipWallColor = false;
 			m_gameUI.refreshRedrawHash();
 			if (m_gameModel.m_bPlayStartClip) {
-
 				m_soundMgr.playSound(SoundManager.SOUND_START);
 				m_gameModel.m_bPlayStartClip = false;
 			}
@@ -513,7 +561,7 @@ public class PacMan extends Applet {
 			m_gameModel.m_fruit.setVisible(false);
 		}
 
-
+		
 		if ((m_gameModel.m_nTicks2BeginPlay == SoundManager.SOUND_START_LENGTH
 				/ m_delay && !m_gameModel.m_bStartClipPlayed)
 				||(m_gameModel.m_nTicks2BeginPlay == 1000 / m_delay && m_gameModel.m_bStartClipPlayed)) {
@@ -526,7 +574,6 @@ public class PacMan extends Applet {
 			m_gameModel.m_nTicks2BeginPlay = 0;
 			m_gameModel.m_bStartClipPlayed = true;
 			
-
 			m_soundMgr.playSound(SoundManager.SOUND_SIREN);
 		}
 	}
@@ -544,7 +591,6 @@ public class PacMan extends Applet {
 		// Check if player has earned free life
 		if (m_gameModel.m_player.m_score >= m_gameModel.m_nextFreeUp) {
 			
-
 			m_soundMgr.playSound(SoundManager.SOUND_EXTRAPAC);
 			m_gameModel.m_nLives += 1;
 			m_gameModel.m_nextFreeUp += 10000;
@@ -558,7 +604,6 @@ public class PacMan extends Applet {
 
 			if (nCollisionCode == 1) // Ghost was eaten
 			{
-
 				m_soundMgr.playSound(SoundManager.SOUND_EATGHOST);
 				break; // Must be eaten one tick at a time
 			} else if (nCollisionCode == 2) // Pacman was caught.
@@ -569,7 +614,6 @@ public class PacMan extends Applet {
 				return;
 			} else if (nCollisionCode == 3) // Pacman ate a Fruit
 			{
-
 				m_soundMgr.playSound(SoundManager.SOUND_EATFRUIT);
 				break; // Must be eaten one tick at a time
 			}
@@ -593,7 +637,6 @@ public class PacMan extends Applet {
 		if (bFleeing != true) {
 			m_gameModel.m_eatGhostPoints = 200;
 			
-
 			m_soundMgr.stopSound(SoundManager.SOUND_GHOSTBLUE);
 			m_soundMgr.playSound(SoundManager.SOUND_SIREN);
 		}
@@ -604,14 +647,11 @@ public class PacMan extends Applet {
 		}
 		// Tick the sound manager (mainly to check if the Chomping loop needs to
 		// be stopped)
-
 		m_soundMgr.tickSound();
 	}
 
 	// Ticked when the game is running the intro
-	@SuppressWarnings("unused")
 	public synchronized void tickIntro() {
-		
 		boolean bFleeing = false;
 		int nCollisionCode;
 
@@ -787,7 +827,6 @@ public class PacMan extends Applet {
 	public void stop() {
 		m_ticker = null;
 		
-
 		m_soundMgr.stop();
 	}
 
@@ -801,6 +840,26 @@ public class PacMan extends Applet {
 			m_gameModel.m_ghosts[i].m_bInsaneAI = !m_gameModel.m_ghosts[i].m_bInsaneAI;
 		}
 	}
+	/*
+	public URL getCodeBase()
+	{
+		if( !testing )
+		{
+			return this.getCodeBase();
+		}
+		else
+		{
+			URL url = null;
+			try {
+				url = new URL("http://code.google.com/p/ubccs410pacman/source/browse/#svn/trunk/PacMan");
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			return url;
+		}
+	}
+	*/
+
 
 
 	/*

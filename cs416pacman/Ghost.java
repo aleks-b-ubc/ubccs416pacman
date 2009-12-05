@@ -1,7 +1,6 @@
 import java.awt.*;
 
 
-@SuppressWarnings("serial")
 public class Ghost extends Thing{
 	byte m_type;
 	byte     m_requestedDirection = STILL;
@@ -34,6 +33,7 @@ public class Ghost extends Thing{
 		
 		super(gameModel, type, startX, startY, middleX);
 		m_type = type;
+		// TODO Auto-generated constructor stub
 	}
 	
 		public void setColor(Color newColor){
@@ -42,8 +42,7 @@ public class Ghost extends Thing{
 		}
 		
 	   // Overriden to draw Ghosts
-	   @SuppressWarnings("static-access")
-	public void draw (GameUI gameUI, Graphics g2)
+	   public void draw (GameUI gameUI, Graphics g2)
 	   {
 	      if (!m_bVisible)
 	         return;
@@ -192,7 +191,7 @@ public class Ghost extends Thing{
 	      }
 	        
 	      // Draw Eyes
-	      double crossEyeDelta = 1;
+	      double crossEyeDelta = 1; // TODO: Make this relative.
 	      double ghostEyeWidth = ghostHeadDiameter / 2.7;
 	      double ghostEyeHeight = ghostHeadDiameter / 2.0;
 	      
@@ -308,15 +307,15 @@ public class Ghost extends Thing{
 	      m_boundingBox.grow (-ghostHeadDiameter / 4, -ghostHeadDiameter / 4);
 	      //m_boundingBox.setBounds ((int)(ghostX + deltaPixelX), (int)(ghostY + deltaPixelY + ghostHeight / 5), ghostHeight, ghostHeight - ghostHeight / 5);
 	      
+	      // TODO: Draw bounding box for testing
 	      //g2.setColor (Color.white);
 	      //g2.drawRect (m_boundingBox.x, m_boundingBox.y, m_boundingBox.width, m_boundingBox.height);
 
 	   }
-	   @SuppressWarnings("unused")
+	   
 	   void setNextDirection (byte prevDirection, boolean bBackoff)
 	   {
-	     
-		int deltaX, deltaY, targetX, targetY;
+	      int deltaX, deltaY, targetX, targetY;
 	      Point nextLocation = new Point ();
 	      byte[] bestDirection = new byte[4];
 	      

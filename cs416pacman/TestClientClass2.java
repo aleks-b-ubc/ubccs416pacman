@@ -1,12 +1,13 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.*;
-
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -40,12 +41,11 @@ public class TestClientClass2 {
             f.setVisible(true);
 
           }
-        @SuppressWarnings("unused")
+        
         public static void main(String[] args) throws IOException, ClassNotFoundException {
                 
                 //TestClientClass theClient = new TestClientClass();
-        		
-				int listenPort = 4444; // the port on which local machine is listening
+        		int listenPort = 4444; // the port on which local machine is listening
         		int updateSendPort = 5555; // the port on which local machine is sending updates
         		int updateListenPort = 6666;
                 String group = "224.0.0.1";
@@ -125,7 +125,6 @@ public class TestClientClass2 {
 
 }
 
-@SuppressWarnings("serial")
 class testPacket implements Serializable{
 	int[] test;
 	testPacket(){

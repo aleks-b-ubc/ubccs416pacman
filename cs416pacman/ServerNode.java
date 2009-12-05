@@ -1,8 +1,10 @@
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+import java.net.SocketAddress;
+import java.util.ArrayList;
 
 public class ServerNode extends Node {
 
@@ -67,7 +69,6 @@ public class ServerNode extends Node {
 
 	}
 	
-	@SuppressWarnings("static-access")
 	public void setUpHosting() {
 		m_pacMan.netMultiplayer = true;
 		m_pacMan.controller = true;

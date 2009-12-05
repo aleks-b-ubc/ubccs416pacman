@@ -1,6 +1,6 @@
 import java.awt.*;
+import java.util.*;
 // Top Right Canvas which is repainted many times because// it contains the Score string.
-@SuppressWarnings("serial")
 class TopCanvas extends Canvas{
 	Font        m_font;   GameModel   m_gameModel;      Image       m_offImage;
    Graphics    m_offGraphics;   Dimension   m_offDim;

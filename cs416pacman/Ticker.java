@@ -12,7 +12,6 @@ class Ticker extends Thread
 		m_pacMan = pacMan;
    }
 
-	@SuppressWarnings("static-access")
 	public void run()
    {
       while (Thread.currentThread () == m_pacMan.m_ticker)

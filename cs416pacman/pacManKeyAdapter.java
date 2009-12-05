@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -72,6 +71,7 @@ class pacManKeyAdapter extends KeyAdapter {
 			if(m_pacMan.m_gameModel.m_state == GameModel.STATE_MULTIPLAYER_WAITROOM){
 				m_pacMan.m_gameModel.m_state = GameModel.STATE_CONNECT;
 			}
+			break;
 
 			//L is for LOCAL MULTIPLAYER
 		case KeyEvent.VK_L:
@@ -112,12 +112,11 @@ class pacManKeyAdapter extends KeyAdapter {
 			//H for Highscores OR if Multiplayer Waiting room, for HOSTING a game
 		case KeyEvent.VK_H:
 			if(m_pacMan.m_gameModel.m_state == GameModel.STATE_MULTIPLAYER_WAITROOM){
-				
 				m_pacMan.m_gameModel.m_state = GameModel.STATE_SET_UP_CONNECTION;
 			}
 			break;
 			
-
+			
 		// V is for SOUND
 		case KeyEvent.VK_V:
 			m_pacMan.m_soundMgr.m_bEnabled = !m_pacMan.m_soundMgr.m_bEnabled;
@@ -130,35 +129,9 @@ class pacManKeyAdapter extends KeyAdapter {
 			m_pacMan.toggleGhostAI();
 			break;
 			
-			
-			
-		//1 Sets the color to white
-		//2 Sets the color to yellow
-		//3 Sets the color to green
-		//4 Sets the color to blue
-		case KeyEvent.VK_1:
-			changePacManColor(Color.white);
-			break;
-		case KeyEvent.VK_2:
-			changePacManColor(Color.yellow);
-			break;
-		case KeyEvent.VK_3:
-			changePacManColor(Color.green);
-			break;
-		case KeyEvent.VK_4:
-			changePacManColor(Color.blue);
-			break;
 
 		default:
 			//System.out.println("Hello World!");
 		}
-	}
-
-	private void changePacManColor(Color newColor) {
-		m_pacMan.m_gameModel.m_things[0].setColor(newColor);
-		m_pacMan.m_bottomCanvas.setPacManColor(newColor);
-		m_pacMan.m_bottomCanvas.repaint();
-		m_pacMan.m_gameModel.m_state = GameModel.STATE_INTRO;
-		
 	}
 }

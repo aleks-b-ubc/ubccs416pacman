@@ -1,6 +1,5 @@
 import java.awt.*;
 
-@SuppressWarnings("serial")
 class Player extends Thing
 {
    static int MAX_MOUTH_DEGREE = 60;
@@ -75,14 +74,15 @@ class Player extends Thing
             if (itemType != GameModel.GS_POWERUP)
             {
                m_score += 10;
-
-              m_gameModel.m_pacMan.m_soundMgr.playSound (SoundManager.SOUND_CHOMP);
+             //TODO REMOVE COMMENT
+              // m_gameModel.m_pacMan.m_soundMgr.playSound (SoundManager.SOUND_CHOMP);
             } else {
                m_score += 50;
                m_gameModel.eatPowerup ();
-              
-               m_gameModel.m_pacMan.m_soundMgr.stopSound (SoundManager.SOUND_SIREN);
-               m_gameModel.m_pacMan.m_soundMgr.playSound (SoundManager.SOUND_GHOSTBLUE);
+               
+             //TODO REMOVE COMMENT
+               //m_gameModel.m_pacMan.m_soundMgr.stopSound (SoundManager.SOUND_SIREN);
+               //m_gameModel.m_pacMan.m_soundMgr.playSound (SoundManager.SOUND_GHOSTBLUE);
             }
             m_gameModel.m_gameState[itemX][itemY] &= ~itemType;  
          }
@@ -96,8 +96,7 @@ class Player extends Thing
       double pacManY = gameUI.m_gridInset + m_locY * gameUI.CELL_LENGTH - pacManDiameter / 2.0;
       double deltaPixelX = 0;
       double deltaPixelY = 0;
-      @SuppressWarnings("unused")
-	int degreeMouth = 0;
+      int degreeMouth = 0;
                  pacManX += gameUI.CELL_LENGTH / 2.0;
       pacManY += gameUI.CELL_LENGTH / 2.0;
       
@@ -122,7 +121,8 @@ class Player extends Thing
             break;
       }
       
-            g2.setColor(pacmanColor);      
+      
+	//TODO: NOTE THIS IS WHERE COLOUR IS SET!      g2.setColor(pacmanColor);      
       // Draw Pacman Chomping      if (!m_bDrawDead)      {
          g2.fillArc ((int)(pacManX + deltaPixelX), (int)(pacManY + deltaPixelY), pacManDiameter, pacManDiameter, m_degreeRotation + m_mouthDegree, 200);
          g2.fillArc ((int)(pacManX + deltaPixelX), (int)(pacManY + deltaPixelY), pacManDiameter, pacManDiameter, m_degreeRotation - m_mouthDegree, -200);      
@@ -195,5 +195,8 @@ class Player extends Thing
    
    public void setColor(Color newColor){
 	   pacmanColor = newColor;
+   }
+   public Color getColor(){
+	   return pacmanColor;
    }
 }
