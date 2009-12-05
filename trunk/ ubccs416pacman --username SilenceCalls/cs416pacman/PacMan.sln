@@ -1,0 +1,13 @@
+Microsoft Visual Studio Solution File, Format Version 1.00
+Project("{66355F20-A65B-11D0-BFB5-00A0C91EBFA0}") = "PacMan", "PacMan.vjp", "{C0D65180-0ABF-11D5-A727-006073EF1AE6}"
+EndProject
+Global
+	GlobalSection(LocalDeployment) = postSolution
+		StartupProject = {C0D65180-0ABF-11D5-A727-006073EF1AE6}
+	EndGlobalSection
+	GlobalSection(BuildOrder) = postSolution
+		0 = {C0D65180-0ABF-11D5-A727-006073EF1AE6}
+	EndGlobalSection
+	GlobalSection(DeploymentRoot) = postSolution
+	EndGlobalSection
+EndGlobal
