@@ -218,7 +218,9 @@ public class PacMan extends Applet {
 			
 	        setFruit(received);
 	        setGhosts(received);
-	        setThings(received);    
+	        setThings(received);
+	        
+	        m_gameUI.m_bRedrawAll = true;
 	        
 		} catch (IOException e) {
 			e.printStackTrace();
