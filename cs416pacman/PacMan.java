@@ -508,6 +508,7 @@ public class PacMan extends Applet {
 	}
 
 	// Ticked when the game is playing normally
+	
 	public synchronized void tickGamePlay() {
 		/*if (ghostDirection !=-1){
 			m_gameModel.m_ghostPlayer.m_requestedDirection = ghostDirection;
