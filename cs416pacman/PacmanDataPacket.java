@@ -64,21 +64,6 @@ public class PacmanDataPacket implements Serializable{
 		   fruit.m_nTicks2Popup = model.m_fruit.m_nTicks2Popup;
 		   fruit.m_eatenPoints = model.m_fruit.m_eatenPoints;
 		   
-		   fruit.m_bPaused = model.m_fruit.m_bPaused;
-		   fruit.m_bInsideRoom = model.m_fruit.m_bInsideRoom;
-		   fruit.m_bVisible = model.m_fruit.m_bVisible;
-		   fruit.m_deltaLocX = model.m_fruit.m_deltaLocX;
-		   fruit.m_deltaLocY = model.m_fruit.m_deltaLocY;
-		   fruit.m_deltaStartX = model.m_fruit.m_deltaStartX;
-		   fruit.m_direction = model.m_fruit.m_direction;
-		   fruit.m_lastDeltaLocX = model.m_fruit.m_lastDeltaLocX;
-		   fruit.m_lastDeltaLocY = model.m_fruit.m_lastDeltaLocY;
-		   fruit.m_lastLocX = model.m_fruit.m_locX;
-		   fruit.m_lastLocY = model.m_fruit.m_locY;
-		   fruit.m_locX = model.m_fruit.m_locX;
-		   fruit.m_locY = model.m_fruit.m_locY;
-		   fruit.m_startX = model.m_fruit.m_startX;
-		   fruit.m_startY = model.m_fruit.m_startY;
 		
 	}
 
@@ -130,21 +115,6 @@ public class PacmanDataPacket implements Serializable{
 				ghosts[i].m_nTicks2Flee = model.m_ghosts[i].m_nTicks2Flee;
 				ghosts[i].m_nTicks2Popup = model.m_ghosts[i].m_nTicks2Popup;
 				
-				ghosts[i].m_bPaused = model.m_ghosts[i].m_bPaused;
-				ghosts[i].m_bInsideRoom = model.m_ghosts[i].m_bInsideRoom;
-				ghosts[i].m_bVisible = model.m_ghosts[i].m_bVisible;
-				ghosts[i].m_deltaLocX = model.m_ghosts[i].m_deltaLocX;
-				ghosts[i].m_deltaLocY = model.m_ghosts[i].m_deltaLocY;
-				ghosts[i].m_deltaStartX = model.m_ghosts[i].m_deltaStartX;
-				ghosts[i].m_direction = model.m_ghosts[i].m_direction;
-				ghosts[i].m_lastDeltaLocX = model.m_ghosts[i].m_lastDeltaLocX;
-				ghosts[i].m_lastDeltaLocY = model.m_ghosts[i].m_lastDeltaLocY;
-				ghosts[i].m_lastLocX = model.m_ghosts[i].m_locX;
-				ghosts[i].m_lastLocY = model.m_ghosts[i].m_locY;
-				ghosts[i].m_locX = model.m_ghosts[i].m_locX;
-				ghosts[i].m_locY = model.m_ghosts[i].m_locY;
-				ghosts[i].m_startX = model.m_ghosts[i].m_startX;
-				ghosts[i].m_startY = model.m_ghosts[i].m_startY;	
 			}
 	}
 

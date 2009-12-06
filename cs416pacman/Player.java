@@ -74,15 +74,13 @@ class Player extends Thing
             if (itemType != GameModel.GS_POWERUP)
             {
                m_score += 10;
-             //TODO REMOVE COMMENT
-              // m_gameModel.m_pacMan.m_soundMgr.playSound (SoundManager.SOUND_CHOMP);
+             m_gameModel.m_pacMan.m_soundMgr.playSound (SoundManager.SOUND_CHOMP);
             } else {
                m_score += 50;
                m_gameModel.eatPowerup ();
                
-             //TODO REMOVE COMMENT
-               //m_gameModel.m_pacMan.m_soundMgr.stopSound (SoundManager.SOUND_SIREN);
-               //m_gameModel.m_pacMan.m_soundMgr.playSound (SoundManager.SOUND_GHOSTBLUE);
+             m_gameModel.m_pacMan.m_soundMgr.stopSound (SoundManager.SOUND_SIREN);
+             m_gameModel.m_pacMan.m_soundMgr.playSound (SoundManager.SOUND_GHOSTBLUE);
             }
             m_gameModel.m_gameState[itemX][itemY] &= ~itemType;  
          }

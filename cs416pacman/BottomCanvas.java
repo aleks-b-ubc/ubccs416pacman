@@ -93,16 +93,11 @@ class BottomCanvas extends Canvas
       m_offGraphics.drawString ("\'M\' for Multiplayer", x, y);
       
       y += fm.getAscent() + fm.getDescent();
-      m_offGraphics.drawString ("\'C\' for Color Selection", x, y);
-      
-      y += fm.getAscent() + fm.getDescent();
       if (m_pacMan.m_soundMgr != null && m_pacMan.m_soundMgr.m_bEnabled)
          m_offGraphics.drawString ("\'V\' for No Sound", x, y);
       else
          m_offGraphics.drawString ("\'V\' for Sound", x, y);
       
-      y += fm.getAscent() + fm.getDescent();
-      m_offGraphics.drawString ("\'H\' for High Scores", x, y);
    
       //y += fm.getAscent() + fm.getDescent();
       //m_offGraphics.drawString ("\'I\'  for Insane AI", x, y);

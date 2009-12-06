@@ -12,13 +12,10 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class PacMan extends Applet {
 	ServerNode serverNode;
-	String sqlDB = "greentea_scoretest";
-	String sqlTable = "HighScores";
 	Connection con;
 	Statement stmt;
 	ResultSet rs;
 	byte ghostDirection =-1;
-	int facebookID; // Facebook userID
 	GameModel m_gameModel;
 	TopCanvas m_topCanvas;
 	BottomCanvas m_bottomCanvas;
@@ -192,7 +189,7 @@ public class PacMan extends Applet {
 	
 	private void updateSlaveModel(){
 		
-		byte[] buffer = new byte[65536];
+		byte[] buffer = new byte[8192];
         PacmanDataPacket received;
         
         //try this on for size! 
@@ -273,21 +270,6 @@ public class PacMan extends Applet {
 			m_gameModel.m_ghosts[i].m_nTicks2Flee = received.ghosts[i].m_nTicks2Flee;
 			m_gameModel.m_ghosts[i].m_nTicks2Popup = received.ghosts[i].m_nTicks2Popup;
 			
-			m_gameModel.m_ghosts[i].m_bPaused = received.ghosts[i].m_bPaused;
-			m_gameModel.m_ghosts[i].m_bInsideRoom = received.ghosts[i].m_bInsideRoom;
-			m_gameModel.m_ghosts[i].m_bVisible = received.ghosts[i].m_bVisible;
-			m_gameModel.m_ghosts[i].m_deltaLocX = received.ghosts[i].m_deltaLocX;
-			m_gameModel.m_ghosts[i].m_deltaLocY = received.ghosts[i].m_deltaLocY;
-			m_gameModel.m_ghosts[i].m_deltaStartX = received.ghosts[i].m_deltaStartX;
-			m_gameModel.m_ghosts[i].m_direction = received.ghosts[i].m_direction;
-			m_gameModel.m_ghosts[i].m_lastDeltaLocX = received.ghosts[i].m_lastDeltaLocX;
-			m_gameModel.m_ghosts[i].m_lastDeltaLocY = received.ghosts[i].m_lastDeltaLocY;
-			m_gameModel.m_ghosts[i].m_lastLocX = received.ghosts[i].m_locX;
-			m_gameModel.m_ghosts[i].m_lastLocY = received.ghosts[i].m_locY;
-			m_gameModel.m_ghosts[i].m_locX = received.ghosts[i].m_locX;
-			m_gameModel.m_ghosts[i].m_locY = received.ghosts[i].m_locY;
-			m_gameModel.m_ghosts[i].m_startX = received.ghosts[i].m_startX;
-			m_gameModel.m_ghosts[i].m_startY = received.ghosts[i].m_startY;
 		}
 	}
 
@@ -301,22 +283,6 @@ public class PacMan extends Applet {
 		   m_gameModel.m_fruit.m_bounceCount = received.fruit.m_bounceCount;
 		   m_gameModel.m_fruit.m_nTicks2Popup = received.fruit.m_nTicks2Popup;
 		   m_gameModel.m_fruit.m_eatenPoints = received.fruit.m_eatenPoints;
-		   
-		   m_gameModel.m_fruit.m_bPaused = received.fruit.m_bPaused;
-		   m_gameModel.m_fruit.m_bInsideRoom = received.fruit.m_bInsideRoom;
-		   m_gameModel.m_fruit.m_bVisible = received.fruit.m_bVisible;
-		   m_gameModel.m_fruit.m_deltaLocX = received.fruit.m_deltaLocX;
-		   m_gameModel.m_fruit.m_deltaLocY = received.fruit.m_deltaLocY;
-		   m_gameModel.m_fruit.m_deltaStartX = received.fruit.m_deltaStartX;
-		   m_gameModel.m_fruit.m_direction = received.fruit.m_direction;
-		   m_gameModel.m_fruit.m_lastDeltaLocX = received.fruit.m_lastDeltaLocX;
-		   m_gameModel.m_fruit.m_lastDeltaLocY = received.fruit.m_lastDeltaLocY;
-		   m_gameModel.m_fruit.m_lastLocX = received.fruit.m_locX;
-		   m_gameModel.m_fruit.m_lastLocY = received.fruit.m_locY;
-		   m_gameModel.m_fruit.m_locX = received.fruit.m_locX;
-		   m_gameModel.m_fruit.m_locY = received.fruit.m_locY;
-		   m_gameModel.m_fruit.m_startX = received.fruit.m_startX;
-		   m_gameModel.m_fruit.m_startY = received.fruit.m_startY;
 		
 	}
 
@@ -365,43 +331,6 @@ public class PacMan extends Applet {
 
 	private synchronized void gameOver() {
 		if (m_gameModel.m_nTicks2GameOver == 0) {
-			try {
-
-				// alternative to do it internally, using only user input name
-				// String name = "";
-				// name=JOptionPane.showInputDialog("Please enter your name");
-				// String msg = "Hello " + name + "!";
-				// JOptionPane.showMessageDialog(null, msg);
-				// System.out.println(name);
-
-				// Extract parameter from index.php
-				String name = this.getParameter("username");
-				String firstname = this.getParameter("firstname");
-				String pic_url = this.getParameter("pic_url");
-
-				// get score from current game and send in a query to
-				// highscore.php
-				int score = m_gameModel.m_player.m_score;
-				String query = "http://www.greentealatte.net/highscore.php?action=submit&admin_user=greentea_pacman&admin_pass=wakawaka&picurl="
-						+ pic_url
-						+ "&firstname="
-						+ firstname
-						+ "&name="
-						+ name
-						+ "&score=" + score + "&access_code=1234";
-				URL url = new URL(query);
-				URLConnection conn = url.openConnection();
-				conn.connect();
-				InputStream in = url.openStream();
-
-				// print out url and paste in browser to see if valid. 0 -
-				// insert fail, 1 - insert success
-				// System.out.println(query);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 
 			if (m_gameModel.m_player.m_score > m_gameModel.m_highScore) {
 				m_gameModel.m_highScore = m_gameModel.m_player.m_score;
