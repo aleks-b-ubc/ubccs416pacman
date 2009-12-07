@@ -11,7 +11,7 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class PacMan extends Applet {
-	ServerNode serverNode;
+	Node serverNode;
 	Connection con;
 	Statement stmt;
 	ResultSet rs;
@@ -45,7 +45,7 @@ public class PacMan extends Applet {
 	static int serverlistenPort = 45452; // the port on which local machine is listening
 	int updateSendPort = 5555; // the port on which local machine is sending updates
 	int updateListenPort = 6666; //the port on which machines listen for updates
-	private ClientNode clientNode;
+	private Node clientNode;
 	 int m_numOfClients;
 	
 	 /**
@@ -127,7 +127,7 @@ public class PacMan extends Applet {
 					e.printStackTrace();
 				}
 			} else {
-				updateSlaveModel();
+				receiveMulticast();
 			}
 		}
 
@@ -136,14 +136,17 @@ public class PacMan extends Applet {
 			m_numOfClients = Integer.parseInt(JOptionPane.showInputDialog
 					(null, "Enter number of clients : ", "", 1));
 			serverNode.connectToClients(m_numOfClients);
+			m_gameModel.m_state = GameModel.STATE_NEWGAME;
 			break;
 		case GameModel.STATE_CONNECT:
-			clientNode = new ClientNode(this);
+			clientNode = new Node(this, false);
 			clientNode.connectMultiplayerGame();
+			m_gameModel.m_state = GameModel.STATE_NEWGAME;
 			break;
 		case GameModel.STATE_SET_UP_CONNECTION:
-			serverNode= new ServerNode(this);
+			serverNode= new Node(this, true);
 			serverNode.setUpHosting();
+			m_gameModel.m_state = GameModel.STATE_HOSTING;
 			break;
 		case GameModel.STATE_MULTIPLAYER_WAITROOM:
 			startMultiplayerScreen();
@@ -187,7 +190,7 @@ public class PacMan extends Applet {
 	
 	//here is where we update the game model!
 	
-	private void updateSlaveModel(){
+	private void receiveMulticast(){
 		
 		byte[] buffer = new byte[8192];
         PacmanDataPacket received;
@@ -199,34 +202,41 @@ public class PacMan extends Applet {
 			ByteArrayInputStream inBuffer = new ByteArrayInputStream(packet.getData());
 	        ObjectInputStream in = new ObjectInputStream(inBuffer);
 	        received = (PacmanDataPacket) in.readObject();
-
-	        m_gameModel.m_state = received.state;
-	        m_gameModel.m_gameState = received.gameState; 
-	        m_gameModel.m_gameSizeX = received.gameSizeX;
-	        m_gameModel.m_gameSizeY = received.gameSizeY;
-	        m_gameModel.m_stage = received.stage; 
-	        m_gameModel.m_pausedState = received.pausedState;
-	        m_gameModel.m_nLives = received.nLives;
 	        
-	        
-	        
-	        Player temp = (Player) m_gameModel.m_things[0];
-			temp.m_degreeRotation = received.degreeRotation;
-			temp.m_score = received.score;
-			temp.m_mouthDegree = received.mouthDegree;
-			m_gameModel.m_things[0] = temp;
-			
-	        setFruit(received);
-	        setGhosts(received);
-	        setThings(received);
-	        
-	        m_gameUI.m_bRedrawAll = true;
+	        if(received.packetType == PacmanDataPacket.TYPE_UPDATE){
+	        	updateGameModel(received);  
+	        }
 	        
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void updateGameModel(PacmanDataPacket received) {
+		m_gameModel.m_state = received.state;
+        m_gameModel.m_gameState = received.gameState; 
+        m_gameModel.m_gameSizeX = received.gameSizeX;
+        m_gameModel.m_gameSizeY = received.gameSizeY;
+        m_gameModel.m_stage = received.stage; 
+        m_gameModel.m_pausedState = received.pausedState;
+        m_gameModel.m_nLives = received.nLives;
+        
+        
+        
+        Player temp = (Player) m_gameModel.m_things[0];
+		temp.m_degreeRotation = received.degreeRotation;
+		temp.m_score = received.score;
+		temp.m_mouthDegree = received.mouthDegree;
+		m_gameModel.m_things[0] = temp;
+		
+        setFruit(received);
+        setGhosts(received);
+        setThings(received);
+        
+        m_gameUI.m_bRedrawAll = true;
+		
 	}
 
 	private void setThings(PacmanDataPacket received) {
@@ -294,7 +304,7 @@ public class PacMan extends Applet {
 	private void sendModel(GameModel gameModel) throws IOException {
 
 		//make a packet with the current game model
-		PacmanDataPacket toSend = new PacmanDataPacket(gameModel);
+		PacmanDataPacket toSend = new PacmanDataPacket(PacmanDataPacket.TYPE_UPDATE, gameModel);
 
 		
 		//write it out

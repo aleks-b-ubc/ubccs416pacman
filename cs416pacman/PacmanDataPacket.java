@@ -8,8 +8,15 @@ import java.io.Serializable;
 //that will go between the nodes
 @SuppressWarnings("serial")
 public class PacmanDataPacket implements Serializable{
-	
+	public static int TYPE_UPDATE = 1;
+	public static int TYPE_ELECT = 2;
+	public static int TYPE_ANS = 3;
+	public static int TYPE_COORD = 4;
 
+	int packetType;
+	String ipAddress;
+	
+	
 	int[][] gameState; // Represents maze as integers
 	int gameSizeX;
 	int gameSizeY;
@@ -32,7 +39,14 @@ public class PacmanDataPacket implements Serializable{
 		state = gameState;
 	}
 	
-	public PacmanDataPacket(GameModel model){
+	public PacmanDataPacket(int type, String address){
+		packetType = type;
+		ipAddress = address;
+	}
+	
+	public PacmanDataPacket(int type, GameModel model){
+		packetType = type;
+		
 		state = model.m_state;
 		gameState = model.m_gameState; 
 		gameSizeX = model.m_gameSizeX;
