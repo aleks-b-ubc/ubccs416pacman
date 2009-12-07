@@ -8,10 +8,10 @@ import java.io.Serializable;
 //that will go between the nodes
 @SuppressWarnings("serial")
 public class PacmanDataPacket implements Serializable{
-	static final int TYPE_UPDATE = 1;
-	static final int TYPE_ELECT = 2;
-	static final int TYPE_ANS = 3;
-	static final int TYPE_COORD = 4;
+	static final int TYPE_UPDATE = 21;
+	static final int TYPE_ELECT = 22;
+	static final int TYPE_ANS = 23;
+	static final int TYPE_COORD = 24;
 
 	int packetType;
 	String ipAddress;
