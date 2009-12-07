@@ -217,9 +217,8 @@ public class PacMan extends Applet {
 	        	else{
 	        		//send an answer with the ID of the node who's elect you received
 	        		//making sure you do not ans your own elects!
-	        		if(received.nodeID != node.id){
-	        			node.sendAns(received.nodeID);
-	        		}
+	        		node.sendAns(received.nodeID);
+	        		
 	        	}
 	        	break;
 	        case PacmanDataPacket.TYPE_ANS:
@@ -227,29 +226,28 @@ public class PacMan extends Applet {
 	        	//we increment the ansCounter
 	        	if(received.nodeID == node.id){
 	        		node.ansCounter++;
-	        		System.out.println("Got an ans with my ID");
 	        	}
 	        	//if we have 1 less then the number of clients. (we are the last one)
 	        	//We win!
-	        	if(node.ansCounter >= (numOfClients - 1)){
+	        	if(node.ansCounter >= numOfClients){
 	        		//WE ARE THE HOST!!!
 	        		node.clientFail(node.ghostID);
-	        		node = new Node(this, true);
+	        		//node = new Node(this, true);
 	        		node.setUpHosting();
 	        		node.sendCoord();
 	        		node.connectToClients();
-
-	        		JOptionPane.showMessageDialog(null, "You are now PacMan!");
+	        		m_gameModel.createGhosts();
+	        		m_gameModel.m_state = GameModel.STATE_NEWGAME;
 	        		
 
-
+	        		JOptionPane.showMessageDialog(null, "You are now PacMan! Starting new Game!");
 	        	}
 	        	break;
 	        case PacmanDataPacket.TYPE_COORD:
-	        	System.out.println("Got coord, ip address:" +received.ipAddress);
-	        	node = new Node(this, false);
+	        	//node = new Node(this, false);
 	        	node.connectMultiplayerGame(received.ipAddress);
 	        	m_gameUI.m_bRedrawAll = true;
+	        	JOptionPane.showMessageDialog(null, "New PackMan! Starting new game!");
 	        	break;
 	        }
 

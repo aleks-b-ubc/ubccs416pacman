@@ -122,13 +122,8 @@ public class GameModel implements Serializable{
 
 		//By default all ghosts are set to AI ghosts. I'd rather not have it here
 		//But moving it breaks a lot of things. 
-		m_ghosts[0] = new GhostAI(this, Thing.GHOST, 13, 11, true, Color.red, 0);
-		m_ghosts[1] = new GhostAI(this, Thing.GHOST, 12, 14, false, Color.pink,
-				2000);
-		m_ghosts[2] = new GhostAI(this, Thing.GHOST, 13, 14, true, Color.cyan,
-				4000);
-		m_ghosts[3] = new GhostAI(this, Thing.GHOST, 15, 14, false,
-				Color.orange, 6000);
+		
+		createGhosts();
 
 		// Fruit
 		m_fruit = new Fruit(this, Thing.FRUIT, 13, 17, true);
@@ -140,6 +135,16 @@ public class GameModel implements Serializable{
 
 		fillThingArray();
 		
+	}
+	
+	public void createGhosts(){
+		m_ghosts[0] = new GhostAI(this, Thing.GHOST, 13, 11, true, Color.red, 0);
+		m_ghosts[1] = new GhostAI(this, Thing.GHOST, 12, 14, false, Color.pink,
+				2000);
+		m_ghosts[2] = new GhostAI(this, Thing.GHOST, 13, 14, true, Color.cyan,
+				4000);
+		m_ghosts[3] = new GhostAI(this, Thing.GHOST, 15, 14, false,
+				Color.orange, 6000);
 	}
 
 	// Use bitwise operations to test for gameCell contents
