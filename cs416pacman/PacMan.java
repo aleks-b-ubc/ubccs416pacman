@@ -1,10 +1,7 @@
 import java.awt.*;
 import java.sql.*;
-import java.util.*;
 import java.applet.*;
-import java.awt.event.*;
 import java.io.*;
-import java.lang.Math;
 import java.net.*;
 
 import javax.swing.*;
@@ -238,7 +235,6 @@ public class PacMan extends Applet {
 	        		m_gameModel.createGhosts();
 	        		m_gameModel.m_state = GameModel.STATE_NEWGAME;
 	        		
-
 	        		JOptionPane.showMessageDialog(null, "You are now PacMan! Starting new Game!");
 	        	}
 	        	break;
@@ -826,25 +822,6 @@ public class PacMan extends Applet {
 			m_gameModel.m_ghosts[i].m_bInsaneAI = !m_gameModel.m_ghosts[i].m_bInsaneAI;
 		}
 	}
-	/*
-	public URL getCodeBase()
-	{
-		if( !testing )
-		{
-			return this.getCodeBase();
-		}
-		else
-		{
-			URL url = null;
-			try {
-				url = new URL("http://code.google.com/p/ubccs410pacman/source/browse/#svn/trunk/PacMan");
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-			return url;
-		}
-	}
-	*/
 
 
 
@@ -863,80 +840,3 @@ public class PacMan extends Applet {
 	 */
 }
 
-/*
- * class MainFrame extends Frame { MainFrame (String title) { super (title); }
- * 
- * public boolean handleEvent (Event e) { if (e.id ==Event.WINDOW_DESTROY) {
- * System.exit (0); } return super.handleEvent (e); } }
- */
-/*
-private  void connectMultiplayerGame() {
-	netMultiplayer = true;
-	controller = false;
-	playerIsGhost = true;
-	
-	try {
-		//initialize the socket over which slave receive updates
-		updateSocket = new MulticastSocket(updateListenPort);
-		updateSocket.joinGroup(InetAddress.getByName(group));
-		//initialize the socket over which slave send updates
-		//tcpSocket = new Socket(InetAddress.getLocalHost(), listenPort);
-		
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-	//once connections are opened, we start the game!
-	m_gameModel.m_state = GameModel.STATE_NEWGAME;
-	ClientWorker cw;
-	cw = new ClientWorker(m_gameModel);
-    Thread t2 = new Thread(cw);
-    t2.start();	
-}
-
-private  void acceptConnection() {
-	//tcpSocket = serverSocket.accept();
-	ServerWorker sw;
-	  try{
-		  //serverSocket.accept();
-	    sw = new ServerWorker(serverSocket.accept(), this);
-	    Thread t = new Thread(sw);
-	    //t.setPriority(Thread.MIN_PRIORITY);
-	    t.start();
-	  } catch (IOException e) {
-	    System.out.println("Accept failed: 4444");
-	    //System.exit(-1);
-	  }
-	multiplayerActive = true;
-
-	// start new game?
-	m_gameModel.m_state = GameModel.STATE_NEWGAME;
-
-}
-
-private void setUpHosting() {
-	netMultiplayer = true;
-	controller = true;
-	playerIsGhost = false;
-
-	
-	try {
-		//create a new server socket for accepting connections from slaves
-		serverSocket = new ServerSocket(listenPort);
-		
-		//Also initialize the update socket for SENDING
-		updateSocket = new MulticastSocket(updateSendPort);
-
-		// Oh. Here we do necessary UI changes
-		// Then we accept the connection?
-		m_gameUI.m_bShowHostingGame = true;
-
-		m_gameUI.hostingIP = InetAddress.getLocalHost().getHostAddress();
-		m_gameUI.portNumber = Integer.toString(serverSocket.getLocalPort());
-		m_gameUI.m_bRedrawAll = true;
-
-		m_gameModel.m_state = GameModel.STATE_HOSTING;
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-
-}*/
