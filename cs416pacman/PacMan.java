@@ -11,7 +11,7 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class PacMan extends Applet {
-	Node serverNode;
+	Node node;
 	Connection con;
 	Statement stmt;
 	ResultSet rs;
@@ -43,10 +43,8 @@ public class PacMan extends Applet {
 	String group = "224.0.0.17"; // this is the group for broadcasting
 
 	static int serverlistenPort = 45452; // the port on which local machine is listening
-	int updateSendPort = 5555; // the port on which local machine is sending updates
-	int updateListenPort = 6666; //the port on which machines listen for updates
-	private Node clientNode;
-	 int m_numOfClients;
+	int updatePort = 5555; // the port for multicast
+	int numOfClients = 0;
 	
 	 /**
 	 @SuppressWarnings("deprecation")
@@ -133,19 +131,23 @@ public class PacMan extends Applet {
 
 		switch (m_gameModel.m_state) {
 		case GameModel.STATE_HOSTING:
-			m_numOfClients = Integer.parseInt(JOptionPane.showInputDialog
+			numOfClients = Integer.parseInt(JOptionPane.showInputDialog
 					(null, "Enter number of clients : ", "", 1));
-			serverNode.connectToClients(m_numOfClients);
+			node.connectToClients();
 			m_gameModel.m_state = GameModel.STATE_NEWGAME;
 			break;
 		case GameModel.STATE_CONNECT:
-			clientNode = new Node(this, false);
-			clientNode.connectMultiplayerGame();
+			//this creates the client acting node
+			node = new Node(this, false);
+			String hostIP = JOptionPane.showInputDialog(null, "Enter host's ip : ",
+					"", 1);
+			node.connectMultiplayerGame(hostIP);
 			m_gameModel.m_state = GameModel.STATE_NEWGAME;
 			break;
 		case GameModel.STATE_SET_UP_CONNECTION:
-			serverNode= new Node(this, true);
-			serverNode.setUpHosting();
+			//this creates the server acting node
+			node= new Node(this, true);
+			node.setUpHosting();
 			m_gameModel.m_state = GameModel.STATE_HOSTING;
 			break;
 		case GameModel.STATE_MULTIPLAYER_WAITROOM:
@@ -203,10 +205,48 @@ public class PacMan extends Applet {
 	        ObjectInputStream in = new ObjectInputStream(inBuffer);
 	        received = (PacmanDataPacket) in.readObject();
 	        
-	        if(received.packetType == PacmanDataPacket.TYPE_UPDATE){
-	        	updateGameModel(received);  
+	        switch(received.packetType){
+	        case PacmanDataPacket.TYPE_UPDATE:
+	        	updateGameModel(received);
+	        	break;
+	        case PacmanDataPacket.TYPE_ELECT:
+	        	node.serverFailed = true;
+	        	node.pauseGame();
+	        	if(received.nodeID < node.id){
+	        		node.sendElect();
+	        	}
+	        	else{
+	        		//send an answer with the ID of the node who's elect you received
+	        		int receivedID = received.nodeID;
+	        		node.sendAns(receivedID);
+	        	}
+	        	break;
+	        case PacmanDataPacket.TYPE_ANS:
+	        	//if the the node that send the ans is sending an ans to your elect
+	        	//we increment the ansCounter
+	        	if(received.nodeID == node.id){
+	        		node.ansCounter++;
+	        	}
+	        	//if we have 1 less then the number of clients. (we are the last one)
+	        	//We win!
+	        	if(node.ansCounter >= (numOfClients - 1)){
+	        		//WE ARE THE HOST!!!
+	        		numOfClients--;
+	        		node.setUpHosting();
+	        		node.sendCoord();
+	        		node.connectToClients();
+	        		JOptionPane.showConfirmDialog(null, "You are now PacMan");
+	        		
+	        		//TODO: REPLACE OURSELFS WITH AI GHOST
+	        		node.unpauseGame();
+
+	        	}
+	        	break;
+	        case PacmanDataPacket.TYPE_COORD:
+	        	node.connectMultiplayerGame(received.ipAddress);
+	        	break;
 	        }
-	        
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -223,7 +263,7 @@ public class PacMan extends Applet {
         m_gameModel.m_pausedState = received.pausedState;
         m_gameModel.m_nLives = received.nLives;
         
-        
+        numOfClients = received.numOfClients;
         
         Player temp = (Player) m_gameModel.m_things[0];
 		temp.m_degreeRotation = received.degreeRotation;
@@ -304,7 +344,7 @@ public class PacMan extends Applet {
 	private void sendModel(GameModel gameModel) throws IOException {
 
 		//make a packet with the current game model
-		PacmanDataPacket toSend = new PacmanDataPacket(PacmanDataPacket.TYPE_UPDATE, gameModel);
+		PacmanDataPacket toSend = new PacmanDataPacket(PacmanDataPacket.TYPE_UPDATE, gameModel, numOfClients);
 
 		
 		//write it out
@@ -315,7 +355,7 @@ public class PacMan extends Applet {
         
         //sending a datagram packet to the multicast group
         DatagramPacket packet = new DatagramPacket(outBuffer.toByteArray(), outBuffer.toByteArray().length,
-                        InetAddress.getByName(group), updateListenPort);
+                        InetAddress.getByName(group), updatePort);
         updateSocket.send(packet);
 	}
 
@@ -525,8 +565,9 @@ public class PacMan extends Applet {
 		/*if (ghostDirection !=-1){
 			m_gameModel.m_ghostPlayer.m_requestedDirection = ghostDirection;
 		}*/
-		if (serverNode !=null)
-			serverNode.updateGhostPlayers();
+		if (controller){
+			node.updateGhostPlayers();
+		}
 		boolean bFleeing = false;
 		int nCollisionCode;
 

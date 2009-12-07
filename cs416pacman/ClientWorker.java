@@ -7,7 +7,7 @@ public class ClientWorker implements Runnable {
 	PrintWriter out;
 	BufferedReader in;
 	Node clientNode;
-	boolean serverFailed;
+	boolean threadRun = true;;
 
 	public ClientWorker(GameModel m_gameModel, String hostIP, Node client) {
 		try {
@@ -24,50 +24,56 @@ public class ClientWorker implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		serverFailed = false;
+		clientNode.serverFailed = false;
 	}
 
 	public void run() {
-		try {
-			byte lastDirection = -1;
-			byte newDirection;
-
-			// tcpSocket.setKeepAlive(true);
-			// tcpSocket.setSoTimeout(3000);
-
-			out = new PrintWriter(tcpSocket.getOutputStream(), true);
-			while (true) {
-				Thread.sleep(1000 / 35);
-				synchronized (m_gameModel) {
-					newDirection = m_gameModel.m_player.m_requestedDirection;
+		while (threadRun) {
+			try {
+				
+				if(clientNode.m_pacMan.controller){
+					threadRun = false;
 				}
-				if (lastDirection != newDirection) {
-					lastDirection = newDirection;
-					System.out.println("sending: " + newDirection);
-					out.write(newDirection);
-					out.flush();
-				}
-				// this checks if we get something in the TCP socket.
-				// if it is a test message, we echo it immideatly.
-				int test;
-				if (!serverFailed) {
-					try {
-						test = in.read();
-						if (test == ServerWorker.TEST) {
-							out.write(test);
-							out.flush();
+				byte lastDirection = -1;
+				byte newDirection;
+
+				// tcpSocket.setKeepAlive(true);
+				// tcpSocket.setSoTimeout(3000);
+
+				out = new PrintWriter(tcpSocket.getOutputStream(), true);
+				while (true) {
+					Thread.sleep(1000 / 35);
+					synchronized (m_gameModel) {
+						newDirection = m_gameModel.m_player.m_requestedDirection;
+					}
+					if (lastDirection != newDirection) {
+						lastDirection = newDirection;
+						out.write(newDirection);
+						out.flush();
+					}
+					// this checks if we get something in the TCP socket.
+					// if it is a test message, we echo it immideatly.
+					int test;
+					if (!clientNode.serverFailed) {
+						try {
+							test = in.read();
+							if (test == ServerWorker.TEST) {
+								out.write(test);
+								out.flush();
+							}
+						} catch (IOException e) {
+							clientNode.serverFailed = true;
+							clientNode.sendElect();
+
 						}
-					} catch (IOException e) {
-						clientNode.serverFailed();
-						serverFailed = true;
 					}
 				}
+
+			} catch (Exception e) {
+				System.out.print("TCPClient:Whoops! It didn't work!\n");
 			}
 
-		} catch (Exception e) {
-			System.out.print("TCPClient:Whoops! It didn't work!\n");
 		}
-
 	}
 
 	protected void finalize() {

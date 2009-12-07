@@ -405,7 +405,7 @@ public class GameModel implements Serializable{
 			m_ghosts[0] = m_ghostPlayer;
 		}
 		else if (m_pacMan.netMultiplayer) {
-			for (int i=0; i< m_pacMan.m_numOfClients; i++){
+			for (int i=0; i< m_pacMan.numOfClients; i++){
 				m_ghosts[i] = ghostAIToPlayer(m_ghosts[i]);
 			}
 		}

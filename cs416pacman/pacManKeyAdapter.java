@@ -89,6 +89,7 @@ class pacManKeyAdapter extends KeyAdapter {
 
 			//P is for PAUSE
 		case KeyEvent.VK_P:
+
 			if (m_pacMan.m_gameModel.m_state == GameModel.STATE_GAMEOVER)
 				break;
 
@@ -134,4 +135,5 @@ class pacManKeyAdapter extends KeyAdapter {
 			//System.out.println("Hello World!");
 		}
 	}
+
 }

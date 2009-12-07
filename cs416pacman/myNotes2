@@ -1,0 +1,33 @@
+My Notes:
+
+Server Fails. 
+
+client functionality:
+
+THIS IS OVER MULTICAST! So, everyone can hear....
+
+server failure detected
+	PAUSE
+	send elect with ID
+	listen for messages
+		if other elect has higher ID
+			wait for coord message
+			connect to new IP
+		if no higher detected in certain time (listen for client num packets)
+		OR client num ans
+			create server socket
+			send out CO-ord with own IP for tcp connections
+			
+			*Dror will do.
+			change control to PacMan, flash message
+			RESUME
+			*all other clients will get resume message as part of game update
+		
+	elect received
+	PAUSE
+	if ID higher, send ans
+	else send elect.
+	listen for client num answers
+		
+
+	

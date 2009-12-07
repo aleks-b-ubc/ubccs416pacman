@@ -8,13 +8,16 @@ import java.io.Serializable;
 //that will go between the nodes
 @SuppressWarnings("serial")
 public class PacmanDataPacket implements Serializable{
-	public static int TYPE_UPDATE = 1;
-	public static int TYPE_ELECT = 2;
-	public static int TYPE_ANS = 3;
-	public static int TYPE_COORD = 4;
+	static final int TYPE_UPDATE = 1;
+	static final int TYPE_ELECT = 2;
+	static final int TYPE_ANS = 3;
+	static final int TYPE_COORD = 4;
 
 	int packetType;
 	String ipAddress;
+	int nodeID;
+	
+	
 	
 	
 	int[][] gameState; // Represents maze as integers
@@ -24,6 +27,7 @@ public class PacmanDataPacket implements Serializable{
 	int state;
 	int pausedState; // Save FSM state when game is paused
 	int nLives;
+	int numOfClients;
 	
 	int degreeRotation;
 	int score;
@@ -44,9 +48,15 @@ public class PacmanDataPacket implements Serializable{
 		ipAddress = address;
 	}
 	
-	public PacmanDataPacket(int type, GameModel model){
+	public PacmanDataPacket(int type, int id){
+		packetType = type;
+		nodeID = id;
+	}
+	
+	public PacmanDataPacket(int type, GameModel model, int clients){
 		packetType = type;
 		
+		numOfClients = clients;
 		state = model.m_state;
 		gameState = model.m_gameState; 
 		gameSizeX = model.m_gameSizeX;
