@@ -7,7 +7,7 @@ import java.util.Enumeration;
 import javax.swing.JOptionPane;
 
 public class Node {
-	int thingID;
+	int ghostID;
 	int id;
 	String ip;
 	PacMan m_pacMan;
@@ -130,28 +130,7 @@ public class Node {
 	}
 
 	//this sends out the elect message
-	public synchronized void sendElect() {
-		
-		//PAUSE THE GAME!!!
-		pauseGame();
-		
-		PacmanDataPacket elect = new PacmanDataPacket(PacmanDataPacket.TYPE_ELECT, id);
-		try{
-			ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
-			ObjectOutputStream out = new ObjectOutputStream(outBuffer);
-			out.writeObject(elect);
-			out.close();
-        
-        //sending a datagram packet to the multicast group
-			DatagramPacket packet = new DatagramPacket(outBuffer.toByteArray(), outBuffer.toByteArray().length,
-                        InetAddress.getByName(m_pacMan.group), m_pacMan.updatePort);
-			m_pacMan.updateSocket.send(packet);
-		}catch (IOException e) {
-			System.out.println("Well, we failed sending elect");
-		}
-		
-		ansCounter = 0;
-	}
+	
 
 	public void pauseGame() {
 		if (m_gameModel.m_state == GameModel.STATE_GAMEOVER)
@@ -211,8 +190,33 @@ public class Node {
 		return Integer.parseInt(temp[3]);
 
 	}
+public synchronized void sendElect() {
+		
+		//PAUSE THE GAME!!!
+		pauseGame();
+		
+		System.out.println("Sent elect, ID: "+id);
+		PacmanDataPacket elect = new PacmanDataPacket(PacmanDataPacket.TYPE_ELECT, id);
+		try{
+			ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
+			ObjectOutputStream out = new ObjectOutputStream(outBuffer);
+			out.writeObject(elect);
+			out.close();
+        
+        //sending a datagram packet to the multicast group
+			DatagramPacket packet = new DatagramPacket(outBuffer.toByteArray(), outBuffer.toByteArray().length,
+                        InetAddress.getByName(m_pacMan.group), m_pacMan.updatePort);
+			m_pacMan.updateSocket.send(packet);
+		}catch (IOException e) {
+			System.out.println("Well, we failed sending elect");
+		}
+		
+		ansCounter = 0;
+	}
 
 	public void sendAns(int replyID) {
+		System.out.println("Sent ans, reply ID: "+replyID);
+		
 		PacmanDataPacket ans = new PacmanDataPacket(PacmanDataPacket.TYPE_ANS, replyID);
 		try{
 			ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
@@ -231,6 +235,7 @@ public class Node {
 	}
 
 	public void sendCoord() {
+		System.out.println("Sent coord with ip " +ip);
 		PacmanDataPacket coord = new PacmanDataPacket(PacmanDataPacket.TYPE_ANS, ip);
 		try{
 			ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();

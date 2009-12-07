@@ -29,11 +29,16 @@ class ServerWorker implements Runnable {
 					.getInputStream()));
 			out = new BufferedWriter(new OutputStreamWriter(client
 					.getOutputStream()));
+			
+			out.write(ghostID);
+			out.flush();
 
 		} catch (IOException e) {
 			System.out.println("in or out failed");
 			System.exit(-1);
 		}
+		
+		
 	}
 
 	public void run() {

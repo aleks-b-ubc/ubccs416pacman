@@ -217,8 +217,10 @@ public class PacMan extends Applet {
 	        	}
 	        	else{
 	        		//send an answer with the ID of the node who's elect you received
-	        		int receivedID = received.nodeID;
-	        		node.sendAns(receivedID);
+	        		//making sure you do not ans your own elects!
+	        		if(received.nodeID != node.id){
+	        			node.sendAns(received.nodeID);
+	        		}
 	        	}
 	        	break;
 	        case PacmanDataPacket.TYPE_ANS:
@@ -226,6 +228,7 @@ public class PacMan extends Applet {
 	        	//we increment the ansCounter
 	        	if(received.nodeID == node.id){
 	        		node.ansCounter++;
+	        		System.out.println("Got an ans with my ID");
 	        	}
 	        	//if we have 1 less then the number of clients. (we are the last one)
 	        	//We win!
@@ -235,9 +238,9 @@ public class PacMan extends Applet {
 	        		node.setUpHosting();
 	        		node.sendCoord();
 	        		node.connectToClients();
-	        		JOptionPane.showConfirmDialog(null, "You are now PacMan");
-	        		
-	        		//TODO: REPLACE OURSELFS WITH AI GHOST
+
+	        		JOptionPane.showMessageDialog(null, "You are now PacMan!");
+	        		node.clientFail(node.ghostID);
 	        		node.unpauseGame();
 
 	        	}

@@ -16,6 +16,11 @@ public class ClientWorker implements Runnable {
 			in = new BufferedReader(new InputStreamReader(tcpSocket
 					.getInputStream()));
 			clientNode = client;
+			
+			int received = in.read();
+			if(received != ServerWorker.TEST){
+				clientNode.ghostID = received;
+			}
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
