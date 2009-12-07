@@ -128,28 +128,8 @@ public class Node {
 		m_pacMan.numOfClients--;
 
 	}
-
-	//this sends out the elect message
 	
 
-	public void pauseGame() {
-		if (m_gameModel.m_state == GameModel.STATE_GAMEOVER)
-			return;
-		else {
-			if(m_gameModel.m_state != GameModel.STATE_PAUSED){
-				m_gameModel.m_pausedState = m_pacMan.m_gameModel.m_state;
-				m_gameModel.m_state = GameModel.STATE_PAUSED;
-			}
-		}
-		
-	}
-	public void unpauseGame(){
-		if (m_gameModel.m_state == GameModel.STATE_PAUSED) {
-			m_gameModel.m_state = m_pacMan.m_gameModel.m_pausedState;
-			m_gameUI.m_bDrawPaused = false;
-			m_gameUI.m_bRedrawAll = true;
-		} 
-	}
 
 	// this is the code run by the client.
 	public void connectMultiplayerGame(String hostIP) {
@@ -209,8 +189,6 @@ public class Node {
 	}
 public synchronized void sendElect() {
 		
-		//PAUSE THE GAME!!!
-		pauseGame();
 		
 		System.out.println("Sent elect, ID: "+id);
 		PacmanDataPacket elect = new PacmanDataPacket(PacmanDataPacket.TYPE_ELECT, id);

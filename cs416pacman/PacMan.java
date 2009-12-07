@@ -211,7 +211,6 @@ public class PacMan extends Applet {
 	        	break;
 	        case PacmanDataPacket.TYPE_ELECT:
 	        	node.serverFailed = true;
-	        	node.pauseGame();
 	        	if(received.nodeID < node.id){
 	        		node.sendElect();
 	        	}
@@ -234,21 +233,20 @@ public class PacMan extends Applet {
 	        	//We win!
 	        	if(node.ansCounter >= (numOfClients - 1)){
 	        		//WE ARE THE HOST!!!
-	        		numOfClients--;
+	        		node.clientFail(node.ghostID);
 	        		node = new Node(this, true);
 	        		node.setUpHosting();
 	        		node.sendCoord();
 	        		node.connectToClients();
 
 	        		JOptionPane.showMessageDialog(null, "You are now PacMan!");
-	        		node.clientFail(node.ghostID);
-	        		node.unpauseGame();
+	        		
+
 
 	        	}
 	        	break;
 	        case PacmanDataPacket.TYPE_COORD:
 	        	System.out.println("Got coord, ip address:" +received.ipAddress);
-	        	node.unpauseGame();
 	        	node = new Node(this, false);
 	        	node.connectMultiplayerGame(received.ipAddress);
 	        	m_gameUI.m_bRedrawAll = true;
