@@ -177,12 +177,29 @@ public class Node {
 	}
 
 	private String getIP() {
-		try {
-			return InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			return "127.0.0.1";
-		}
+		Enumeration<NetworkInterface> netInterfaces = null;
+        try {
+            netInterfaces = NetworkInterface.getNetworkInterfaces();
+        } catch (SocketException e) {
+            //log.error("Somehow we have a socket error...");
+        }
+
+        while (netInterfaces.hasMoreElements()) {
+            NetworkInterface ni = netInterfaces.nextElement();
+            Enumeration<InetAddress> address = ni.getInetAddresses();
+            while (address.hasMoreElements()) {
+                InetAddress addr = address.nextElement();
+                if (!addr.isLoopbackAddress() && !addr.isSiteLocalAddress()
+                        && !(addr.getHostAddress().indexOf(":") > -1)) {
+                    return addr.getHostAddress();
+                }
+            }
+        }
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            return "127.0.0.1";
+        }
 	}
 
 	private int getLastIpNumber() {
