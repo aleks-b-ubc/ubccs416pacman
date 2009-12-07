@@ -235,6 +235,7 @@ public class PacMan extends Applet {
 	        	if(node.ansCounter >= (numOfClients - 1)){
 	        		//WE ARE THE HOST!!!
 	        		numOfClients--;
+	        		node = new Node(this, true);
 	        		node.setUpHosting();
 	        		node.sendCoord();
 	        		node.connectToClients();
@@ -246,7 +247,11 @@ public class PacMan extends Applet {
 	        	}
 	        	break;
 	        case PacmanDataPacket.TYPE_COORD:
+	        	System.out.println("Got coord, ip address:" +received.ipAddress);
+	        	node.unpauseGame();
+	        	node = new Node(this, false);
 	        	node.connectMultiplayerGame(received.ipAddress);
+	        	m_gameUI.m_bRedrawAll = true;
 	        	break;
 	        }
 

@@ -236,7 +236,7 @@ public synchronized void sendElect() {
 
 	public void sendCoord() {
 		System.out.println("Sent coord with ip " +ip);
-		PacmanDataPacket coord = new PacmanDataPacket(PacmanDataPacket.TYPE_ANS, ip);
+		PacmanDataPacket coord = new PacmanDataPacket(PacmanDataPacket.TYPE_COORD, ip);
 		try{
 			ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
 			ObjectOutputStream out = new ObjectOutputStream(outBuffer);
