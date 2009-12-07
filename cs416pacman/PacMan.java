@@ -216,7 +216,6 @@ public class PacMan extends Applet {
 	        	}
 	        	else{
 	        		//send an answer with the ID of the node who's elect you received
-	        		//making sure you do not ans your own elects!
 	        		node.sendAns(received.nodeID);
 	        		
 	        	}
